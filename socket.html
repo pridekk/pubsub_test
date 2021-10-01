@@ -1,0 +1,46 @@
+<!--index.ejs-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>학교</title>
+    <script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<textarea rows="20" cols="30" id="chat"></textarea><br>
+<input type="text" id="user"><input type="button" value="msg submit" onclick="myOnClick()">
+</body>
+<script>
+    var token = "eyJhbGciOiJIUzUxMiJ9.eyJ1aWQiOiIxNTAyMTM3MDY5Iiwic3ViIjoiMjgiLCJzZXNzaW9uX2lkIjoiNjYwN2IxYWYtNWVmZS00NWY4LThiZWYtMzM5OGMyYTg4MzI3IiwiaWQiOjI4LCJleHAiOjE2MzM0ODE2MTksImpvaW5fcGxhdGZvcm0iOiJLQUtBTyIsImlhdCI6MTYzMzA0OTYxOSwiZW1haWwiOiJwcmlkZWtrQGdtYWlsLmNvbSJ9.Q6Z2x2yE-utOLJyW6BlzpxSapLinvULBKI5UyPk2bxceHmUWnV0b1Jbvrq37SgJyBo7ZREEWiLVHENr1z4Ndhg"
+    var socket = io('http://localhost:3006', {query: "token=" + token});
+
+    socket.on('connect', () => {
+        console.log('test')
+        socket
+            .on('authenticated', () => {
+                console.log('authenticated')
+            })
+            .on('unauthorized', (msg) => {
+                console.log(`unauthorized: ${JSON.stringify(msg.data)}`);
+                throw new Error(msg.data.type);
+            })
+
+    })
+
+    socket.on('005930', function (data) {
+        console.log(data)
+        $('#chat').append(data.now_price);
+    });
+    socket.on('test1', function (data) {
+        console.log(data)
+        $('#chat').append(1+data);
+    });
+
+    
+    
+    function myOnClick() {
+        socket.emit("msg", {comment: $('#user').val()});
+        $('#user').val('');
+    }
+</script>
+</html>
