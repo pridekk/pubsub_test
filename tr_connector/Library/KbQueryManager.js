@@ -198,6 +198,7 @@ KbQueryManager.prototype.registerReal = function(aquery, realField, keyArr, comp
 {
 	var i, j, regArr = [], comp, dataKey;
 	if(typeof(aquery)=='string') aquery = AQuery.getSafeQuery(aquery);
+  if (!aquery) return;
 
 	for(i=0; i<keyArr.length; i++)
 	{
@@ -250,31 +251,25 @@ KbQueryManager.prototype.realProcess = function() {
     }
 
     trcd = abuf.nextOriString(8);
-    if(trcd === "KBRSKXSM"){
-      aquery = AQuery.getSafeQuery(trcd);
+    aquery = AQuery.getSafeQuery(trcd);
 
-      code = abuf.nextOriString(BP.SZ_REAL_KEY);
-      if (aquery.getQueryType() != '.Push') abuf.addOffset(1); //한자리 공백
+    code = abuf.nextOriString(BP.SZ_REAL_KEY);  
+    if (aquery.getQueryType() != '.Push') abuf.addOffset(1); //한자리 공백
 
-      queryData = this.makeQueryData(aquery);
+    queryData = this.makeQueryData(aquery);
 
-      //현재는 강제로 isReal을 넣고 queryData 에서 isReal 값에 따라 다른 처리를 한다.
-      //이 부분을 쿼리정보로 알 수 있을지는 확인이 필요
-      queryData.isReal = true;
-      queryData.outBlockData(abuf, abuf.getOffset());
+    //현재는 강제로 isReal을 넣고 queryData 에서 isReal 값에 따라 다른 처리를 한다.
+    //이 부분을 쿼리정보로 알 수 있을지는 확인이 필요
+    queryData.isReal = true;
+    queryData.outBlockData(abuf, abuf.getOffset());
 
-      //실시간키는 따로 넣어줘야한다.
-      outblock = queryData.getBlockData('OutBlock1')[0];
-      outblock.rl_tm_key = code;
+    //실시간키는 따로 넣어줘야한다.
+    outblock = queryData.getBlockData('OutBlock1')[0];
+    outblock.rl_tm_key = code;
 
-      //this.realDataToComp(code, queryData);
-      var dataKey = queryData.getQueryName() + code;
-      realCallbacks[dataKey](queryData);
-    } else {
-      console.log(`Unknown tr:${trcd}` )
-      abuf.clear
-    }
-
+    //this.realDataToComp(code, queryData);
+    var dataKey = queryData.getQueryName() + code;
+    realCallbacks[dataKey](queryData);
   }
 };
 

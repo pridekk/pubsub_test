@@ -4,13 +4,13 @@
   "description": "",
   "main": "feed_publisher.js",
   "scripts": {
-    "serve tr": "node server.js"
+    "serve client": "node subscriber1.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.22.0",
-    "express": "^4.17.1",
-    "redis": "^3.1.2"
+    "array-shuffle": "^3.0.0",
+    "shuffle-array": "^1.0.1",
+    "socket.io-client": "^4.2.0"
   }
 }

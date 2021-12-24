@@ -1,1 +1,10 @@
 /node_modules/
+/tr_connector/node_modules/
+/feed_publisher/node_modules/
+/feed_client/node_modules/
+/feed_client/package-lock.json
+/feed_publisher/package-lock.json
+/tr_connector/package-lock.json
+/.idea/deployment.xml
+/.idea/sshConfigs.xml
+/.idea/webServers.xml

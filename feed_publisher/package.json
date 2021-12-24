@@ -4,13 +4,15 @@
   "description": "",
   "main": "feed_publisher.js",
   "scripts": {
-    "serve tr": "node server.js"
+    "publisher": "node feed_publisher.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.22.0",
+    "debug": "^4.3.2",
     "express": "^4.17.1",
-    "redis": "^3.1.2"
+    "jsonwebtoken": "^8.5.1",
+    "redis": "^3.1.2",
+    "socket.io": "^4.2.0"
   }
 }

@@ -128,7 +128,7 @@ AQuery.getSafeQuery = function(qryName)
 			if(success) AQuery.setQuery(cQryName, aquery);
 			else 
 			{
-				theApp.onError('load fail! : Query/'+qryName+'.'+AQuery.FORMAT, 'AQuery', -1, -1, {});
+				//theApp.onError('load fail! : Query/'+qryName+'.'+AQuery.FORMAT, 'AQuery', -1, -1, {});
 				console.error('load fail! : Query/'+qryName+'.'+AQuery.FORMAT);
 				//console.log('load fail! : Query/'+qryName+'.'+AQuery.FORMAT);
 				aquery = null;
@@ -158,10 +158,15 @@ AQuery.fidInfoMap =
 
 AQuery.prototype.loadQuery = function(url, isAsync, callback)
 {
-	result = fs.readFileSync(url, 'utf8');
-	if(result) {
-		this.query = AQuery.parseQuery(result);
-		if(callback) callback.call(this, true);
+	var thisObj = this;
+	try {
+		result = fs.readFileSync(url, 'utf8');
+		if(result) {
+			this.query = AQuery.parseQuery(result);
+			if(callback) callback.call(thisObj, true);
+		}
+	} catch(err) {
+		if(callback) callback.call(thisObj, false);
 	}
 	/*
     $.ajax(
